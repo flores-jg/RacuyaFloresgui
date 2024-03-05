@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
-import javax.swing.JFormattedTextField;
+import javax.swing.JFormattedTextField
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

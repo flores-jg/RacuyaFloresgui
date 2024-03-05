@@ -20,7 +20,7 @@ public class Main extends JFrame implements ActionListener {
     private JPanel contentPane;
     private JTextField textField;
     private JTextField textField_1;
-    private JButton btnNewButton;
+    private JButton signInBtn;
     private JButton btnNewButton_1;
 
     /**
@@ -62,11 +62,11 @@ public class Main extends JFrame implements ActionListener {
         contentPane.add(textField_1);
         textField_1.setColumns(10);
 
-        btnNewButton = new JButton("Sign in");
-        btnNewButton.setForeground(new Color(255, 255, 255));
-        btnNewButton.setBackground(new Color(255, 0, 128));
-        btnNewButton.setBounds(476, 302, 85, 21);
-        contentPane.add(btnNewButton);
+        signInBtn = new JButton("Sign in");
+        signInBtn.setForeground(new Color(255, 255, 255));
+        signInBtn.setBackground(new Color(255, 0, 128));
+        signInBtn.setBounds(476, 302, 85, 21);
+        contentPane.add(signInBtn);
 
         JTextPane txtpnWelcome = new JTextPane();
         txtpnWelcome.setFont(new Font("Arial", Font.BOLD, 20));

@@ -5,10 +5,15 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.File;
+import javax.annotation.processing.FilerException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPasswordField;
@@ -18,7 +23,7 @@ import javax.swing.JTextField;
 public class CreateAccount {
 
     private JFrame frame;
-    private JTextField textField;
+    private JTextField userTxtField;
     private JPasswordField passwordField;
     private JPasswordField passwordField_1;
 
@@ -62,10 +67,10 @@ public class CreateAccount {
         txtpnCreateAnAccount.setFocusable(false);
         frame.getContentPane().add(txtpnCreateAnAccount);
 
-        textField = new JTextField();
-        textField.setBounds(435, 154, 195, 19);
-        frame.getContentPane().add(textField);
-        textField.setColumns(10);
+        userTxtField = new JTextField();
+        userTxtField.setBounds(435, 154, 195, 19);
+        frame.getContentPane().add(userTxtField);
+        userTxtField.setColumns(10);
 
         JTextPane txtpnUsernameemail = new JTextPane();
         txtpnUsernameemail.setText("Username/Email");
@@ -105,26 +110,58 @@ public class CreateAccount {
     }
 
     private void createAccount() {
-        String username = textField.getText();
+        String username = userTxtField.getText();
         String password = new String(passwordField.getPassword());
         String repeatPassword = new String(passwordField_1.getPassword());
 
-        if (!password.equals(repeatPassword)) {
-            System.out.println("Passwords do not match. Please try again.");
-            return;
+        try {
+            File accList = new File("accounts.txt");
+            Scanner sc = new Scanner(accList);
+            ArrayList<String> userList = new ArrayList<String>();
+            ArrayList<String> passList = new ArrayList<String>();
+
+            while (sc.hasNextLine()) {
+                String currLine = sc.nextLine();
+                String[] split = currLine.split(",", 2);
+                for (String a : split) {
+                    userList.add(a);
+                    passList.add(a);
+                }
+
+                System.out.println(currLine + " | has been added.");
+            }
+            
+            System.out.println(userList);
+            System.out.println(passList);
+
+            
+            if (username.isEmpty() || password.isEmpty()){
+                System.out.println("Username or Password cannot be empty!");
+                return;
+            } else if (userList.contains(username)) {
+                System.out.println("Username already taken!");
+                return;
+            } 
+            else if (!password.equals(repeatPassword)) {
+                System.out.println("Passwords do not match. Please try again.");
+                return;
+            } else {
+                try (PrintWriter writer = new PrintWriter(new FileWriter("accounts.txt", true))) {
+                    writer.println(username + "," + password);                                                          // Store the account in a text file
+                    System.out.println("Account created successfully.");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Error creating account. Please try again.");
+                }
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
         }
 
-        // Store the account in a text file
-        try (PrintWriter writer = new PrintWriter(new FileWriter("accounts.txt", true))) {
-            writer.println(username + "," + password);
-            System.out.println("Account created successfully.");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.out.println("Error creating account. Please try again.");
-        }
+
     }
 
-	public void showFrame() {
-		frame.setVisible(true);		
-	}
+    public void showFrame() {
+        frame.setVisible(true);
+    }
 }
